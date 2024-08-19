@@ -49,6 +49,7 @@ class MessagesByTopicTitleView(generics.ListAPIView):
 
     def get_queryset(self):
         title = self.kwargs['title']
+        print(f"Title received: {title}")
 
         if 'questions' in self.request.path:
             message_type = Message.QUESTION

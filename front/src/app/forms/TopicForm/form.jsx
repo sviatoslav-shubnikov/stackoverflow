@@ -10,23 +10,45 @@ const TopicForm = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault()
 		setError(null)
+		const token = localStorage.getItem('token')
+
+		if (!title || !text) {
+			setError('All fields are required')
+			return
+		}
 
 		try {
-			const response = await axios.post('http://localhost:8000/api/topics/', {
-				title,
-			})
-
-			const response2 = await axios.post(
-				'http://localhost:8000/api/messages/',
+			const topicResponse = await axios.post(
+				'http://localhost:8000/api/topics/',
+				{ title },
 				{
-					topic: title,
-					message_type: 'Q',
-					text,
+					headers: {
+						Authorization: `token ${token}`,
+					},
+				}
+			)
+
+			const messagePayload = {
+				topic: topicResponse.data.id,
+				message_type: 'Q',
+
+				text,
+			}
+			console.log('Payload for message:', messagePayload)
+
+			const messageResponse = await axios.post(
+				'http://localhost:8000/api/messages/',
+				messagePayload,
+				{
+					headers: {
+						Authorization: `token ${token}`,
+					},
 				}
 			)
 
 			window.location.href = '/questions'
 		} catch (err) {
+			console.log('Error response:', err.response?.data)
 			setError(err.response?.data || 'Adding failed')
 		}
 	}
@@ -35,7 +57,7 @@ const TopicForm = () => {
 		<>
 			<form onSubmit={handleSubmit}>
 				<div className='form-group'>
-					<label htmlFor='exampleInputEmail1'>Title</label>
+					+<label htmlFor='exampleInputEmail1'>Title</label>
 					<input
 						type='text'
 						className='form-control'

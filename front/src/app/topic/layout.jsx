@@ -1,17 +1,18 @@
 import React from 'react'
 import Header from '../landing/Header'
 import Aside from '../landing/Aside'
-import { useParams } from 'react-router-dom'
+import TopicPage from './question/question'
+import Answers from './answers/answers'
+
 const FullTopic = () => {
 	return (
 		<>
 			<Header />
 			<div style={{ display: 'flex' }}>
 				<Aside />
-				<div style={{ flexGrow: 1, padding: '20px' }}></div>
-				{/* questions */}
-				<div>soon</div>
-				{/* answers */}
+				<div style={{ flexGrow: 0, padding: '20px' }}></div>
+				<TopicPage />
+				<Answers />
 			</div>
 		</>
 	)

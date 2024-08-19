@@ -33,6 +33,7 @@ function App() {
 							/>
 							<Route path='/questions' exact element={<Questions />} />
 							<Route path='/add/topic' exact element={<TopicForm />} />
+							<Route path='/question/:id' element={<FullTopic />} />
 						</>
 					) : (
 						<>
