@@ -10,7 +10,8 @@ const AllTopic = () => {
 		try {
 			const response = await axios.get('http://localhost:8000/api/topics/')
 			if (response.status === 200) {
-				setTopics(response.data)
+				const sortedTopics = response.data.sort((a, b) => b.id - a.id)
+				setTopics(sortedTopics)
 			} else {
 				console.error('Failed to fetch the topics.')
 			}

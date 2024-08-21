@@ -30,3 +30,4 @@ class Message(models.Model):
 
     def __str__(self):
         return f"{self.get_message_type_display()} by {self.username}"
+    

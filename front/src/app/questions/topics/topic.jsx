@@ -1,13 +1,32 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 
 const Topic = ({ id, title, owner, created_at, views }) => {
+	const handleClick = async () => {
+		try {
+			const response = await axios.put(
+				`http://localhost:8000/api/topics/${id}/increment-views/`
+			)
+			console.log('Views incremented:', response.data)
+		} catch (error) {
+			console.error('Error incrementing views:', error)
+		}
+	}
+
 	return (
 		<div>
 			<div className='bg-white shadow-md rounded p-4 border border-gray-300'>
 				<Link
 					style={{ textDecoration: 'none', color: 'black' }}
 					to={`/question/${id}`}
+					onClick={async (e) => {
+						e.preventDefault()
+
+						console.log('Hi')
+						await handleClick()
+						window.location.href = `/question/${id}`
+					}}
 				>
 					<h4>{title}</h4>
 				</Link>

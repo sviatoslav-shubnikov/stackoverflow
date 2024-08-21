@@ -1,16 +1,14 @@
 from rest_framework.exceptions import ValidationError
 from rest_framework import viewsets, generics, permissions
-from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
+from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
-from .funcs.permissions import IsAuthenticatedOrReadOnly
-from django.contrib.auth.models import User
-from .models import Topic, Message
 from rest_framework import status
+from .funcs.permissions import IsAuthenticatedOrReadOnly
+from .models import Topic, Message
 from .serializers import TopicSerializer, MessageSerializer
 from rest_framework.generics import RetrieveAPIView
+from rest_framework.permissions import AllowAny
 
 
 class TopicViewSet(viewsets.ModelViewSet):
@@ -36,6 +34,44 @@ class MessageViewSet(viewsets.ModelViewSet):
             serializer.save(username=user.username)
         else:
             raise ValidationError("User is not authenticated.")
+        
+    # @action(detail=True, methods=['post'], permission_classes=[IsAuthenticatedOrReadOnly])
+    # def like(self, request, id=None):
+    #     return self.add_reaction(request, id, 'like')
+
+    # @action(detail=True, methods=['post'], permission_classes=[IsAuthenticatedOrReadOnly])
+    # def dislike(self, request, id=None):
+    #     return self.add_reaction(request, id, 'dislike')
+
+    # def add_reaction(self, request, id, reaction_type):
+    #     message = self.get_object()
+    #     user = request.user
+
+    #     try:
+    #         user_reaction = UserReaction.objects.get(user=user, message=message)
+    #         if user_reaction.reaction == reaction_type:
+    #             return Response({'detail': f'You have already {reaction_type}d this message.'}, status=status.HTTP_400_BAD_REQUEST)
+    #         else:
+               
+    #             if user_reaction.reaction == 'like':
+    #                 message.positive_reactions -= 1
+    #             else:
+    #                 message.negative_reactions -= 1
+
+    #             user_reaction.reaction = reaction_type
+    #             user_reaction.save()
+
+    #     except UserReaction.DoesNotExist:
+    #         user_reaction = UserReaction(user=user, message=message, reaction=reaction_type)
+    #         user_reaction.save()
+
+    #     if reaction_type == 'like':
+    #         message.positive_reactions += 1
+    #     else:
+    #         message.negative_reactions += 1
+
+    #     message.save()
+    #     return Response({'detail': f'Message {reaction_type}d successfully.'}, status=status.HTTP_200_OK)
 
 class LatestTopicView(RetrieveAPIView):
     queryset = Topic.objects.all()
@@ -50,7 +86,6 @@ class MessagesByTopicTitleView(generics.ListAPIView):
     def get_queryset(self):
         title = self.kwargs['title']
         print(f"Title received: {title}")
-
         if 'questions' in self.request.path:
             message_type = Message.QUESTION
         elif 'answers' in self.request.path:
@@ -64,3 +99,15 @@ class MessagesByTopicTitleView(generics.ListAPIView):
             queryset = queryset.filter(message_type=message_type)
 
         return queryset
+    
+class IncrementTopicViews(APIView):
+    permission_classes = [AllowAny]
+
+    def put(self, request, id):
+        try:
+            topic = Topic.objects.get(id=id)
+            topic.views += 1
+            topic.save()
+            return Response({'status': 'views incremented'}, status=status.HTTP_200_OK)
+        except Topic.DoesNotExist:
+            return Response({'error': 'Topic not found'}, status=status.HTTP_404_NOT_FOUND)

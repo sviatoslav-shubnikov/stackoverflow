@@ -14,3 +14,5 @@ class MessageSerializer(serializers.ModelSerializer):
         model = Message
         fields = ['id', 'topic', 'topic_title', 'message_type', 'username', 'text', 'positive_reactions', 'negative_reactions', 'created_at']
         read_only_fields = ['username']
+
+    

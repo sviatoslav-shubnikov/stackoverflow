@@ -1,20 +1,24 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import useAuth from '../../../hook/useAuth'
 
 const MessageForm = ({ topic }) => {
-	// Проверьте, что topic и topic.id существуют
 	console.log('Topic:', topic)
 	console.log('Topic ID:', topic?.id)
 
 	const [text, setText] = useState('')
 	const [error, setError] = useState(null)
-
+	const { isAuthenticated } = useAuth()
 	const handleSubmit = async (e) => {
 		e.preventDefault()
 		setError(null)
 		const token = localStorage.getItem('token')
 
+		if (!isAuthenticated) {
+			setError('You are unauthorized ')
+			return
+		}
 		if (!text) {
 			setError('Text is required')
 			return

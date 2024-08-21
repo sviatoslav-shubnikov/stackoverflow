@@ -97,7 +97,7 @@ DATABASES = {
         'NAME': 'stackoverflow',
         'USER': 'postgres',
         'PASSWORD': '852274',
-        'HOST': 'localhost',  
+        'HOST': 'db',  
         'PORT': '5432',   
     }
 }

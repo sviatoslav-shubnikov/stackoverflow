@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: H:/htmlJSNODE/Python/StackOverflow/back/StackOverflow
+    container_name: backend
+    volumes:
+      - ./back:/StackOverflow
+    ports:
+      - '8000:8000'
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgres://postgres:852274@db:5432/stackoverflow
+
+  frontend:
+    build: ./front
+    container_name: frontend
+    volumes:
+      - ./front:/src
+    ports:
+      - '5173:5173'
+    depends_on:
+      - backend
+
+  db:
+    image: postgres:15-alpine
+    container_name: db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=852274
+      - POSTGRES_DB=stackoverflow
+
+volumes:
+  postgres_data:
