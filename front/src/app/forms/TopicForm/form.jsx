@@ -57,7 +57,7 @@ const TopicForm = () => {
 		<>
 			<form onSubmit={handleSubmit}>
 				<div className='form-group'>
-					+<label htmlFor='exampleInputEmail1'>Title</label>
+					<label htmlFor='exampleInputEmail1'>Title</label>
 					<input
 						type='text'
 						className='form-control'

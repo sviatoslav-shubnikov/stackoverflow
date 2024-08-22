@@ -1,13 +1,16 @@
-
 FROM node:18-alpine
 
 WORKDIR /app
 
-COPY package.json package-lock.json /app/
+COPY package.json package-lock.json ./
 RUN npm install
 
-COPY . /app/
+COPY . .
 
 RUN npm run build
 
-CMD ["npx", "serve", "-s", "build", "-l", "5173"]
+RUN npm install -g serve
+
+EXPOSE 5173
+
+CMD ["serve", "-s", "dist", "-l", "5173"]
