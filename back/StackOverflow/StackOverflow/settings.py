@@ -59,8 +59,11 @@ MIDDLEWARE = [
 ROOT_URLCONF = "StackOverflow.urls"
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',  
+"http://srv509462.hstgr.cloud:3000",  
 ]
+
+CORS_ALLOW_CREDENTIALS = True
+
 
 TEMPLATES = [
     {
