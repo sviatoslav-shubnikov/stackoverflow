@@ -9,7 +9,7 @@ const LatestTopic = () => {
 	const fetchLatestTopic = async () => {
 		try {
 			const response = await axios.get(
-				'http://localhost:8000/api/latest-topic/'
+				'http://srv509462.hstgr.cloud:8001/api/latest-topic/'
 			)
 			if (response.status === 200) {
 				setLatestTopic(response.data)

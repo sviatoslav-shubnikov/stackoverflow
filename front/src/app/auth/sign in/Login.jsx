@@ -12,10 +12,13 @@ const Login = ({ setType }) => {
 		setError(null)
 
 		try {
-			const response = await axios.post('http://localhost:8000/user/sign-in/', {
-				email,
-				password,
-			})
+			const response = await axios.post(
+				'http://srv509462.hstgr.cloud:8001/user/sign-in/',
+				{
+					email,
+					password,
+				}
+			)
 
 			const data = response.data
 			localStorage.setItem('token', data.token)

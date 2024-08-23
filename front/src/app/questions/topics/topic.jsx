@@ -6,7 +6,7 @@ const Topic = ({ id, title, owner, created_at, views }) => {
 	const handleClick = async () => {
 		try {
 			const response = await axios.put(
-				`http://localhost:8000/api/topics/${id}/increment-views/`
+				`http://srv509462.hstgr.cloud:8001/api/topics/${id}/increment-views/`
 			)
 			console.log('Views incremented:', response.data)
 		} catch (error) {

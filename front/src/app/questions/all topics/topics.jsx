@@ -8,7 +8,9 @@ const AllTopic = () => {
 
 	const fetchTopics = async () => {
 		try {
-			const response = await axios.get('http://localhost:8000/api/topics/')
+			const response = await axios.get(
+				'http://srv509462.hstgr.cloud:8001/api/topics/'
+			)
 			if (response.status === 200) {
 				const sortedTopics = response.data.sort((a, b) => b.id - a.id)
 				setTopics(sortedTopics)

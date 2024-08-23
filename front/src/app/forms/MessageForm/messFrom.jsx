@@ -31,7 +31,7 @@ const MessageForm = ({ topic }) => {
 
 		try {
 			const response = await axios.post(
-				'http://localhost:8000/api/messages/',
+				'http://srv509462.hstgr.cloud:8001/api/messages/',
 				{
 					topic: topic.id,
 					message_type: 'A',

@@ -19,7 +19,7 @@ const TopicForm = () => {
 
 		try {
 			const topicResponse = await axios.post(
-				'http://localhost:8000/api/topics/',
+				'http://srv509462.hstgr.cloud:8001/api/topics/',
 				{ title },
 				{
 					headers: {
@@ -37,7 +37,7 @@ const TopicForm = () => {
 			console.log('Payload for message:', messagePayload)
 
 			const messageResponse = await axios.post(
-				'http://localhost:8000/api/messages/',
+				'http://srv509462.hstgr.cloud:8001/api/messages/',
 				messagePayload,
 				{
 					headers: {

@@ -13,11 +13,14 @@ const Registration = ({ setType }) => {
 		setError(null)
 
 		try {
-			const response = await axios.post('http://localhost:8000/user/sign-up/', {
-				email,
-				username,
-				password,
-			})
+			const response = await axios.post(
+				'http://srv509462.hstgr.cloud:8001/user/sign-up/',
+				{
+					email,
+					username,
+					password,
+				}
+			)
 
 			window.location.href = '/user/sign-in'
 		} catch (err) {

@@ -24,7 +24,7 @@ function TopicPage() {
 	const fetchTitle = async () => {
 		try {
 			const response = await axios.get(
-				`http://localhost:8000/api/topics/${id}/`
+				`http://srv509462.hstgr.cloud:8001/api/topics/${id}/`
 			)
 			if (response.status === 200) {
 				setTitle(response.data.title)
@@ -40,7 +40,7 @@ function TopicPage() {
 	const fetchQuestions = async () => {
 		try {
 			const response = await axios.get(
-				`http://localhost:8000/api/messages/by-topic-title/${encodeURIComponent(
+				`http://srv509462.hstgr.cloud:8001/api/messages/by-topic-title/${encodeURIComponent(
 					title
 				)}/questions/`
 			)

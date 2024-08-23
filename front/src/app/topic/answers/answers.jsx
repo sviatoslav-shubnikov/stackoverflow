@@ -10,7 +10,7 @@ const Answers = ({ title }) => {
 	const fetchAnswers = async () => {
 		try {
 			const response = await axios.get(
-				`http://localhost:8000/api/messages/by-topic-title/${title}/answers/`
+				`http://srv509462.hstgr.cloud:8001/api/messages/by-topic-title/${title}/answers/`
 			)
 			if (response.status === 200) {
 				setAnswers(response.data)
