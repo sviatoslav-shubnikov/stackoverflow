@@ -10,6 +10,8 @@ services:
       - db
     environment:
       - DATABASE_URL=postgres://postgres:852274@db:5432/stackoverflow
+    networks:
+      - my_network
 
   frontend:
     build: ./front
@@ -30,6 +32,12 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=852274
       - POSTGRES_DB=stackoverflow
+    networks:
+      - my_network
 
 volumes:
   postgres_data:
+
+networks:
+  my_network:
+    driver: bridge
