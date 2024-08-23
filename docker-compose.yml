@@ -1,6 +1,6 @@
 services:
   backend:
-    build: /back/StackOverflow
+    build: ./back/StackOverflow
     container_name: backend
     volumes:
       - ./back:/StackOverflow
