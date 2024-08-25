@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../landing/Header'
 import Aside from '../landing/Aside'
 import AllTopic from './all topics/topics'
@@ -7,9 +7,11 @@ import { Link } from 'react-router-dom'
 
 const Questions = () => {
 	const { isAuthenticated } = useAuth()
+	const [searchText, setSearchText] = useState('')
+
 	return (
 		<>
-			<Header />
+			<Header onSearch={setSearchText} />{' '}
 			<div style={{ display: 'flex' }}>
 				<Aside />
 				<div style={{ flexGrow: 1, padding: '20px' }}>
@@ -22,7 +24,7 @@ const Questions = () => {
 						</Link>
 					</button>
 					<h1>Все вопросы</h1>
-					<AllTopic />
+					<AllTopic searchText={searchText} />{' '}
 				</div>
 			</div>
 		</>

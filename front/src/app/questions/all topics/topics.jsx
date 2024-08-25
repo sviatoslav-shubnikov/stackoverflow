@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Topic from './topic'
 
-const AllTopic = () => {
+const AllTopic = ({ searchText }) => {
 	const [topics, setTopics] = useState([])
 	const [loading, setLoading] = useState(true)
 
@@ -32,10 +32,14 @@ const AllTopic = () => {
 		return <p>Loading topics...</p>
 	}
 
+	const filteredTopics = topics.filter((topic) =>
+		topic.title.toLowerCase().includes(searchText.toLowerCase())
+	)
+
 	return (
 		<div>
-			{topics.length > 0 ? (
-				topics.map((topic) => <Topic key={topic.id} {...topic} />)
+			{filteredTopics.length > 0 ? (
+				filteredTopics.map((topic) => <Topic key={topic.id} {...topic} />)
 			) : (
 				<p>No topics found.</p>
 			)}
