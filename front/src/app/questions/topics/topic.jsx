@@ -53,7 +53,7 @@ const Topic = ({ id, title, owner, created_at, views }) => {
 					<h4>{title}</h4>
 				</Link>
 				<div>{owner}</div>
-				<div>{questions.reactions} reactions</div>
+				{/* <div>{questions.reactions} reactions</div> */}
 				<div>{views} views</div>
 				<div>{created_at}</div>
 			</div>

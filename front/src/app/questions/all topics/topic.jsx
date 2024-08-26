@@ -54,7 +54,7 @@ const Topic = ({ id, title, owner, created_at, views }) => {
 
 				<div>{owner}</div>
 				<div>{views} views</div>
-				<div>{questions.reactions} reactions</div>
+				{/* <div>{questions.reactions} reactions</div> */}
 				<div>{created_at}</div>
 			</div>
 		</div>
