@@ -77,7 +77,18 @@ function TopicPage() {
 			console.error('Error sending reaction: ', error)
 		}
 	}
-
+	const formatDate = (dateString) => {
+		const options = {
+			year: 'numeric',
+			month: 'long',
+			day: 'numeric',
+			hour: 'numeric',
+			minute: 'numeric',
+			second: 'numeric',
+			timeZoneName: 'short',
+		}
+		return new Date(dateString).toLocaleDateString(undefined, options)
+	}
 	if (loading) {
 		return <p>Loading questions...</p>
 	}
