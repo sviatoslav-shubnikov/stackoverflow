@@ -12,7 +12,7 @@ class MessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Message
-        fields = ['id', 'topic', 'topic_title', 'message_type', 'username', 'text', 'positive_reactions', 'negative_reactions', 'created_at']
+        fields = ['id', 'topic', 'topic_title', 'message_type', 'username', 'text', 'reactions', 'users_reacted', 'created_at']
         read_only_fields = ['username']
 
     
