@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import Answer from './Answer'
+import Answer from './answer'
 
 const Answers = ({ title }) => {
 	const [answers, setAnswers] = useState([])
