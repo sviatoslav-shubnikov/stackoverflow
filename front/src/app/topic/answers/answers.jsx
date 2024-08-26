@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import Answer from './answer'
+import Answer from './Answer'
 
 const Answers = ({ title }) => {
 	const [answers, setAnswers] = useState([])
@@ -14,7 +14,6 @@ const Answers = ({ title }) => {
 			)
 			if (response.status === 200) {
 				setAnswers(response.data)
-				console.log(response.data)
 			} else {
 				console.error('Failed to fetch the answers of the topic.')
 			}
@@ -22,6 +21,28 @@ const Answers = ({ title }) => {
 			console.error('Error fetching answers: ', error)
 		} finally {
 			setLoading(false)
+		}
+	}
+
+	const handleReactUp = async (id) => {
+		try {
+			await axios.post(
+				`http://srv509462.hstgr.cloud:8001/api/messages/${id}/react-up/`
+			)
+			fetchAnswers()
+		} catch (error) {
+			console.error('Error reacting up: ', error)
+		}
+	}
+
+	const handleReactDown = async (id) => {
+		try {
+			await axios.post(
+				`http://srv509462.hstgr.cloud:8001/api/messages/${id}/react-down/`
+			)
+			fetchAnswers()
+		} catch (error) {
+			console.error('Error reacting down: ', error)
 		}
 	}
 
@@ -41,13 +62,14 @@ const Answers = ({ title }) => {
 						key={answer.id}
 						username={answer.username}
 						text={answer.text}
-						positive_reactions={answer.positive_reactions}
-						negative_reactions={answer.negative_reactions}
+						reactions={answer.reactions}
 						created_at={answer.created_at}
+						onReactUp={() => handleReactUp(answer.id)}
+						onReactDown={() => handleReactDown(answer.id)}
 					/>
 				))
 			) : (
-				<></>
+				<p>No answers found.</p>
 			)}
 		</div>
 	)

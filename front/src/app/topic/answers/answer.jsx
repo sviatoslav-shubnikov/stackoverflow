@@ -3,9 +3,10 @@ import React from 'react'
 const Answer = ({
 	username,
 	text,
-	positive_reactions,
-	negative_reactions,
+	reactions,
 	created_at,
+	onReactUp,
+	onReactDown,
 }) => {
 	return (
 		<div className='bg-white p-4 border border-gray-200 rounded-lg shadow-sm'>
@@ -15,11 +16,14 @@ const Answer = ({
 			<div>
 				<strong>Text:</strong> {text}
 			</div>
-			<div>
-				<strong>Positive Reactions:</strong> {positive_reactions}
-			</div>
-			<div>
-				<strong>Negative Reactions:</strong> {negative_reactions}
+			<div className='flex items-center space-x-4'>
+				<button onClick={onReactUp} className='focus:outline-none'>
+					<span>⬆️</span>
+				</button>
+				<span>{reactions}</span>
+				<button onClick={onReactDown} className='focus:outline-none'>
+					<span>⬇️</span>
+				</button>
 			</div>
 			<div>
 				<strong>Created At:</strong> {created_at}

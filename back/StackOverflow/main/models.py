@@ -24,8 +24,8 @@ class Message(models.Model):
     message_type = models.CharField(max_length=1, choices=TYPE_CHOICES)
     username = models.CharField(max_length=150)  
     text = models.TextField()
-    positive_reactions = models.IntegerField(default=0)
-    negative_reactions = models.IntegerField(default=0)
+    reactions = models.IntegerField(default=0)
+    users_reacted = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='reacted_messages', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

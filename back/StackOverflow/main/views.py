@@ -35,43 +35,26 @@ class MessageViewSet(viewsets.ModelViewSet):
         else:
             raise ValidationError("User is not authenticated.")
         
-    # @action(detail=True, methods=['post'], permission_classes=[IsAuthenticatedOrReadOnly])
-    # def like(self, request, id=None):
-    #     return self.add_reaction(request, id, 'like')
+    @action(detail=True, methods=['post'], permission_classes=[permissions.IsAuthenticated])
+    def react(self, request, pk=None):
+        message = self.get_object()
+        user = request.user
 
-    # @action(detail=True, methods=['post'], permission_classes=[IsAuthenticatedOrReadOnly])
-    # def dislike(self, request, id=None):
-    #     return self.add_reaction(request, id, 'dislike')
+        if message.users_reacted.filter(id=user.id).exists():
+            return Response({'detail': 'You have already reacted to this message.'}, status=status.HTTP_400_BAD_REQUEST)
 
-    # def add_reaction(self, request, id, reaction_type):
-    #     message = self.get_object()
-    #     user = request.user
+        reaction = request.data.get('reaction')
+        if reaction == 'up':
+            message.reactions += 1
+        elif reaction == 'down':
+            message.reactions -= 1
+        else:
+            return Response({'detail': 'Invalid reaction.'}, status=status.HTTP_400_BAD_REQUEST)
 
-    #     try:
-    #         user_reaction = UserReaction.objects.get(user=user, message=message)
-    #         if user_reaction.reaction == reaction_type:
-    #             return Response({'detail': f'You have already {reaction_type}d this message.'}, status=status.HTTP_400_BAD_REQUEST)
-    #         else:
-               
-    #             if user_reaction.reaction == 'like':
-    #                 message.positive_reactions -= 1
-    #             else:
-    #                 message.negative_reactions -= 1
+        message.users_reacted.add(user)
+        message.save()
 
-    #             user_reaction.reaction = reaction_type
-    #             user_reaction.save()
-
-    #     except UserReaction.DoesNotExist:
-    #         user_reaction = UserReaction(user=user, message=message, reaction=reaction_type)
-    #         user_reaction.save()
-
-    #     if reaction_type == 'like':
-    #         message.positive_reactions += 1
-    #     else:
-    #         message.negative_reactions += 1
-
-    #     message.save()
-    #     return Response({'detail': f'Message {reaction_type}d successfully.'}, status=status.HTTP_200_OK)
+        return Response({'reactions': message.reactions})
 
 class LatestTopicView(RetrieveAPIView):
     queryset = Topic.objects.all()

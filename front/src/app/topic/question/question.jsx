@@ -1,8 +1,8 @@
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import Answers from '../answers/answers'
+import axios from 'axios'
 import MessageForm from '../../forms/MessageForm/messFrom'
+import Answers from '../answers/answers'
 
 function TopicPage() {
 	const { id } = useParams()
@@ -46,7 +46,6 @@ function TopicPage() {
 			)
 			if (response.status === 200) {
 				setQuestions(response.data)
-				console.log(response.data)
 			} else {
 				console.error('Failed to fetch the questions of the topic.')
 			}
@@ -57,18 +56,26 @@ function TopicPage() {
 		}
 	}
 
-	// Форматирование даты
-	const formatDate = (dateString) => {
-		const options = {
-			year: 'numeric',
-			month: 'long',
-			day: 'numeric',
-			hour: 'numeric',
-			minute: 'numeric',
-			second: 'numeric',
-			timeZoneName: 'short',
+	const handleReaction = async (messageId, reaction) => {
+		try {
+			const response = await axios.post(
+				`http://srv509462.hstgr.cloud:8001/api/messages/${messageId}/react/`,
+				{ reaction }
+			)
+			if (response.status === 200) {
+				setQuestions((prevQuestions) =>
+					prevQuestions.map((question) =>
+						question.id === messageId
+							? { ...question, reactions: response.data.reactions }
+							: question
+					)
+				)
+			} else {
+				console.error('Failed to send reaction.')
+			}
+		} catch (error) {
+			console.error('Error sending reaction: ', error)
 		}
-		return new Date(dateString).toLocaleDateString(undefined, options)
 	}
 
 	if (loading) {
@@ -91,19 +98,18 @@ function TopicPage() {
 						<div className='mb-2'>
 							<strong className='text-gray-700'>Text:</strong> {question.text}
 						</div>
-						<div className='flex flex-col space-y-2'>
-							<div>
-								<strong className='text-gray-700'>Positive Reactions:</strong>{' '}
-								{question.positive_reactions}
-							</div>
-							<div>
-								<strong className='text-gray-700'>Negative Reactions:</strong>{' '}
-								{question.negative_reactions}
-							</div>
-							<div>
-								<strong className='text-gray-700'>Created At:</strong>{' '}
-								{formatDate(question.created_at)}
-							</div>
+						<div className='flex items-center space-x-4'>
+							<button onClick={() => handleReaction(question.id, 'up')}>
+								<span>⬆️</span>
+							</button>
+							<span>{question.reactions}</span>
+							<button onClick={() => handleReaction(question.id, 'down')}>
+								<span>⬇️</span>
+							</button>
+						</div>
+						<div>
+							<strong className='text-gray-700'>Created At:</strong>{' '}
+							{formatDate(question.created_at)}
 						</div>
 					</div>
 				))
