@@ -57,10 +57,16 @@ function TopicPage() {
 	}
 
 	const handleReaction = async (messageId, reaction) => {
+		const token = localStorage.getItem('token')
 		try {
 			const response = await axios.post(
 				`http://srv509462.hstgr.cloud:8001/api/messages/${messageId}/react/`,
-				{ reaction }
+				{ reaction },
+				{
+					headers: {
+						Authorization: `token ${token}`,
+					},
+				}
 			)
 			if (response.status === 200) {
 				setQuestions((prevQuestions) =>

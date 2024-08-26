@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Answer from './answer'
+import useAuth from '../../../hook/useAuth'
 
 const Answers = ({ title }) => {
 	const [answers, setAnswers] = useState([])
@@ -12,6 +13,7 @@ const Answers = ({ title }) => {
 			const response = await axios.get(
 				`http://srv509462.hstgr.cloud:8001/api/messages/by-topic-title/${title}/answers/`
 			)
+
 			if (response.status === 200) {
 				setAnswers(response.data)
 			} else {
@@ -25,9 +27,15 @@ const Answers = ({ title }) => {
 	}
 
 	const handleReactUp = async (id) => {
+		const token = localStorage.getItem('token')
 		try {
 			await axios.post(
-				`http://srv509462.hstgr.cloud:8001/api/messages/${id}/react-up/`
+				`http://srv509462.hstgr.cloud:8001/api/messages/${id}/react/up/`,
+				{
+					headers: {
+						Authorization: `token ${token}`,
+					},
+				}
 			)
 			fetchAnswers()
 		} catch (error) {
@@ -36,9 +44,15 @@ const Answers = ({ title }) => {
 	}
 
 	const handleReactDown = async (id) => {
+		const token = localStorage.getItem('token')
 		try {
 			await axios.post(
-				`http://srv509462.hstgr.cloud:8001/api/messages/${id}/react-down/`
+				`http://srv509462.hstgr.cloud:8001/api/messages/${id}/react/down/`,
+				{
+					headers: {
+						Authorization: `token ${token}`,
+					},
+				}
 			)
 			fetchAnswers()
 		} catch (error) {
@@ -69,7 +83,7 @@ const Answers = ({ title }) => {
 					/>
 				))
 			) : (
-				<p>No answers found.</p>
+				<></>
 			)}
 		</div>
 	)
