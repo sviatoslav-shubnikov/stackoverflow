@@ -28,9 +28,11 @@ const Answers = ({ title }) => {
 
 	const handleReactUp = async (id) => {
 		const token = localStorage.getItem('token')
+		const reaction = 'up'
 		try {
 			await axios.post(
-				`http://srv509462.hstgr.cloud:8001/api/messages/${id}/react/up/`,
+				`http://srv509462.hstgr.cloud:8001/api/messages/${id}/react/`,
+				{ reaction },
 				{
 					headers: {
 						Authorization: `token ${token}`,
@@ -45,9 +47,11 @@ const Answers = ({ title }) => {
 
 	const handleReactDown = async (id) => {
 		const token = localStorage.getItem('token')
+		const reaction = 'down'
 		try {
 			await axios.post(
-				`http://srv509462.hstgr.cloud:8001/api/messages/${id}/react/down/`,
+				`http://srv509462.hstgr.cloud:8001/api/messages/${id}/react/`,
+				{ reaction },
 				{
 					headers: {
 						Authorization: `token ${token}`,
