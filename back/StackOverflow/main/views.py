@@ -45,19 +45,28 @@ class MessageViewSet(viewsets.ModelViewSet):
         if reaction not in ['up', 'down']:
             return Response({'detail': 'Invalid reaction.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        user_reaction = message.users_reacted.filter(id=user.id).first()
-
-        if user_reaction:
-    
-            if reaction == 'up':
-                message.reactions -= 1
-            elif reaction == 'down':
-                message.reactions += 1
+        if message.users_reacted.filter(id=user.id).exists():
+            current_reaction = 'up' if message.reactions > 0 else 'down'
             
-            message.users_reacted.remove(user)
-            message.save()
-            return Response({'reactions': message.reactions, 'detail': 'Reaction removed.'})
-
+            if current_reaction == reaction:
+                if reaction == 'up':
+                    message.reactions -= 1
+                else:
+                    message.reactions += 1
+                
+                message.users_reacted.remove(user)
+                message.save()
+                return Response({'reactions': message.reactions, 'detail': 'Reaction removed.'})
+            
+            else:
+                if reaction == 'up':
+                    message.reactions += 2  
+                else:
+                    message.reactions -= 2  
+                
+                message.users_reacted.add(user)
+                message.save()
+                return Response({'reactions': message.reactions, 'detail': 'Reaction changed.'})
         
         if reaction == 'up':
             message.reactions += 1
