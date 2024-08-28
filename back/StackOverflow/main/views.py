@@ -40,21 +40,34 @@ class MessageViewSet(viewsets.ModelViewSet):
         message = self.get_object()
         user = request.user
 
-        if message.users_reacted.filter(id=user.id).exists():
-            return Response({'detail': 'You have already reacted to this message.'}, status=status.HTTP_400_BAD_REQUEST)
-
         reaction = request.data.get('reaction')
+
+        if reaction not in ['up', 'down']:
+            return Response({'detail': 'Invalid reaction.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        user_reaction = message.users_reacted.filter(id=user.id).first()
+
+        if user_reaction:
+    
+            if reaction == 'up':
+                message.reactions -= 1
+            elif reaction == 'down':
+                message.reactions += 1
+            
+            message.users_reacted.remove(user)
+            message.save()
+            return Response({'reactions': message.reactions, 'detail': 'Reaction removed.'})
+
+        
         if reaction == 'up':
             message.reactions += 1
         elif reaction == 'down':
             message.reactions -= 1
-        else:
-            return Response({'detail': 'Invalid reaction.'}, status=status.HTTP_400_BAD_REQUEST)
 
         message.users_reacted.add(user)
         message.save()
 
-        return Response({'reactions': message.reactions})
+        return Response({'reactions': message.reactions, 'detail': 'Reaction added.'})
 
 class LatestTopicView(RetrieveAPIView):
     queryset = Topic.objects.all()
