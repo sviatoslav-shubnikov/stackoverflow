@@ -15,7 +15,8 @@ const Answers = ({ title }) => {
 			)
 
 			if (response.status === 200) {
-				setAnswers(response.data)
+				const sortedAnswers = response.data.sort((a, b) => a.id - b.id)
+				setAnswers(sortedAnswers)
 			} else {
 				console.error('Failed to fetch the answers of the topic.')
 			}
